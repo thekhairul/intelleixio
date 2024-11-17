@@ -8,9 +8,9 @@ import { PaginationControls } from "@/views/products/paginationControls/paginati
 import { ProductList } from "@/views/products/productList/productList";
 import { ProductModal } from "@/views/products/productModal/productModal";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useState } from "react";
+import React, { Suspense, useCallback, useState } from "react";
 
-export const Products: React.FC = () => {
+const ProductsContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -49,5 +49,13 @@ export const Products: React.FC = () => {
         <ProductModal product={selectedProduct} onClose={handleCloseModal} />
       )}
     </div>
+  );
+};
+
+export const Products: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 };
